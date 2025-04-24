@@ -1,0 +1,36 @@
+name: Java TP3 - Test manuel
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-run:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 🧬 Checkout du code
+      uses: actions/checkout@v3
+
+    - name: ☕ Setup Java 23
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '23'
+
+    - name: 🛠️ Compilation des classes
+      run: |
+        mkdir -p target/classes
+        javac -d target/classes $(find src/main/java -name "*.java")
+
+    - name: ▶️ Exécution - TestUnitaire
+      run: |
+        echo "===== Résultat TestUnitaire.java ====="
+        java -cp target/classes est.usmba.TestUnitaire
+
+    - name: ▶️ Exécution - TestIntegration
+      run: |
+        echo "===== Résultat TestIntegration.java ====="
+        java -cp target/classes est.usmba.TestIntegration
